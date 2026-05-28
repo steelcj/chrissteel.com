@@ -1,0 +1,18 @@
+#!/bin/sh
+
+set -e
+
+echo "pre-push: building Hugo site..."
+hugo --minify
+
+echo "pre-push: pushing site/ to gh-pages..."
+cd site
+git init
+git remote add origin git@github.com:steelcj/chrissteel.com.git
+git add .
+git commit -m "Deploy: $(date -u +%Y-%m-%dT%H:%M:%SZ)"
+git push --force origin HEAD:gh-pages
+cd ..
+rm -rf site/.git
+
+echo "pre-push: done."
